@@ -4,11 +4,6 @@ from flaskext.mysql import MySQL
 
 mysql = MySQL()
 
-# print(user)
-# print(password)
-# print(mysqlDB)
-# print(host)
-
 # MySQL configurations
 app.config["MYSQL_DATABASE_USER"] = user
 app.config["MYSQL_DATABASE_PASSWORD"] = password
