@@ -16,17 +16,18 @@ def entry():
 # Create Entry
 @app.route("/add", methods=["POST"])
 def create_entry():
+
     _json = request.json
-    _title = request.form.get("title")
-    _date = request.form.get("date")
-    _content = request.form.get("content")
+    _title = _json["title"]
+    _date = _json["date"]
+    _content = _json["content"]
 
     if _title and _date and _content and request.method == "POST":
         query = "INSERT INTO tbl_entry VALUES(%s, %s, %s, %s)"
         params = (None, _title, _date, _content)
         temp = db_write(query, params)
-        # resp = jsonify("Entry added successfully!")
-        # resp.status_code = 200
+        resp = jsonify("Entry added successfully!")
+        resp.status_code = 200
 
         return resp
     else:
@@ -121,4 +122,4 @@ def db_write(query, params=None):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

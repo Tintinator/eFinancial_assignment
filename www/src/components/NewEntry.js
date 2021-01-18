@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
+import { Input } from "reactstrap";
 import "../styles/NewEntry.css";
+import { createPost } from "../api/BlogCommands";
 
 function NewEntry() {
+  const [title, setTitle] = React.useState("");
+  const [date, setDate] = React.useState("");
+  const [content, setContent] = React.useState("");
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const publishPost = () => {
+    console.log(`${title} and ${date} and ${content}`);
+    createPost(title, date, content);
+    handleClose();
+  };
 
   return (
     <>
@@ -20,13 +30,28 @@ function NewEntry() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Control className="Form" placeholder="Title" />
+            <Form.Control
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+              placeholder="Title"
+            />
             <br />
-            <Form.Control className="Form" placeholder="Date" />
+            <Input
+              type="date"
+              name="customDate"
+              placeholder="choose a date"
+              onChange={(e) => {
+                setDate(e.target.value);
+              }}
+              value={date}
+            />
             <br />
             <Form.Control
-              className="Form"
               as="textarea"
+              onChange={(e) => {
+                setContent(e.target.value);
+              }}
               placeholder="Text (optional)"
               rows={3}
             />
@@ -36,7 +61,7 @@ function NewEntry() {
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={publishPost}>
             Publish
           </Button>
         </Modal.Footer>
