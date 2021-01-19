@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Input } from "reactstrap";
+
 import "../styles/NewEntry.css";
 import { createPost } from "../api/BlogCommands";
 
@@ -13,7 +14,7 @@ function NewEntry() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const publishPost = () => {
-    console.log(`${title} and ${date} and ${content}`);
+    console.log(`Creating: ${title} and ${date} and ${content}`);
     createPost(title, date, content);
     handleClose();
   };

@@ -7,7 +7,7 @@ from flask import jsonify, flash, request
 @app.route("/entry")
 def entry():
 
-    query = "SELECT entry_id, entry_title, entry_date FROM tbl_entry;"
+    query = "SELECT * FROM tbl_entry;"
     resp = db_read(query)
 
     return resp
