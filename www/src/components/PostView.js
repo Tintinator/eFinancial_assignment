@@ -1,35 +1,51 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Form, Modal, ListGroup } from "react-bootstrap";
 import { Input } from "reactstrap";
 
 import { deletePost, updatePost } from "../api/BlogCommands";
 import EditButton from "./EditButton";
 
-function PostView(props) {
-  const { title, date, id, content } = props;
-  const [show, setShow] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-  const [postTitle, setPostTitle] = useState(title);
-  const [postContent, setPostContent] = useState(content);
+class PostView extends React.Component {
+  constructor(props) {
+    super(props);
+    const { title, content } = this.props;
+    this.state = {
+      show: false,
+      isEdit: false,
+      postTitle: title,
+      postContent: content,
+    };
+  }
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => {
-    handleView();
-    setShow(true);
+  handleClose = () => this.setState({ ...this.state, show: false });
+
+  handleShow = () => {
+    this.handleView();
+    this.setState({ ...this.state, show: true });
   };
-  const handleEdit = () => setIsEdit(true);
-  const handleView = () => setIsEdit(false);
-  const handleDelete = () => {
+
+  handleEdit = () => this.setState({ ...this.state, isEdit: true });
+
+  handleView = () => this.setState({ ...this.state, isEdit: false });
+
+  handleDelete = () => {
+    const { id } = this.state;
+
     console.log(`Deleting: ${id}`);
     deletePost(id);
-    handleClose();
+    this.handleClose();
   };
-  const handleUpdate = () => {
+
+  handleUpdate = () => {
+    const { id } = this.props;
+    const { postTitle, postContent } = this.state;
+
     console.log(`Updating: ${id}`);
     updatePost(id, postTitle, postContent);
-    handleClose();
+    this.handleClose();
   };
-  const dateFmt = (inputInstant) => {
+
+  dateFmt = (inputInstant) => {
     const dte = new Date(inputInstant);
     const year = dte.getFullYear();
     const month = (dte.getMonth() + 1).toString().padStart(2, "0");
@@ -38,59 +54,64 @@ function PostView(props) {
     return `${year}-${month}-${day}`;
   };
 
-  return (
-    <>
-      <ListGroup.Item action id={id} onClick={handleShow}>
-        {`${id}. ${title}`}
-      </ListGroup.Item>
+  render() {
+    const { id, date } = this.props;
+    const { isEdit, show, postTitle, postContent } = this.state;
 
-      <Modal show={show} onHide={handleClose} centered>
-        <Modal.Body>
-          <Form>
-            <Form.Control
-              onChange={(e) => {
-                setPostTitle(e.target.value);
-              }}
-              placeholder="Title"
-              value={postTitle}
-              disabled={!isEdit}
+    return (
+      <>
+        <ListGroup.Item action id={id} onClick={this.handleShow}>
+          {`${id}. ${postTitle}`}
+        </ListGroup.Item>
+
+        <Modal show={show} onHide={this.handleClose} centered>
+          <Modal.Body>
+            <Form>
+              <Form.Control
+                onChange={(e) => {
+                  this.setState({ ...this.state, postTitle: e.target.value });
+                }}
+                placeholder="Title"
+                value={postTitle}
+                disabled={!isEdit}
+              />
+              <br />
+              <Input
+                type="date"
+                placeholder="choose a date"
+                value={this.dateFmt(date)}
+                disabled
+              />
+              <br />
+              <Form.Control
+                as="textarea"
+                onChange={(e) => {
+                  this.setState({ ...this.state, postContent: e.target.value });
+                }}
+                placeholder="Text (optional)"
+                rows={3}
+                value={postContent}
+                disabled={!isEdit}
+              />
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.handleClose}>
+              Close
+            </Button>
+            <EditButton
+              editClick={this.handleEdit}
+              updateClick={this.handleUpdate}
+              isEdit={isEdit}
             />
-            <br />
-            <Input
-              type="date"
-              placeholder="choose a date"
-              value={dateFmt(date)}
-              disabled
-            />
-            <br />
-            <Form.Control
-              as="textarea"
-              onChange={(e) => {
-                setPostContent(e.target.value);
-              }}
-              placeholder="Text (optional)"
-              rows={3}
-              value={postContent}
-              disabled={!isEdit}
-            />
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <EditButton
-            editClick={handleEdit}
-            updateClick={handleUpdate}
-            isEdit={isEdit}
-          />
-          <Button variant="danger" onClick={handleDelete}>
-            Delete
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+            <Button variant="danger" onClick={this.handleDelete}>
+              Delete
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  }
 }
 
 export default PostView;
