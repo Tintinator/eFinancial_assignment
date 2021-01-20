@@ -47,7 +47,7 @@ export const updatePost = async function updatePost(
   console.log(` update post ${post_id}. ${post_title} and ${post_content}`);
   let url = `http://127.0.0.1:5000/edit`;
   const requestOptions = {
-    method: "POST",
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       id: post_id,

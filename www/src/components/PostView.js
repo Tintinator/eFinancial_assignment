@@ -29,7 +29,7 @@ class PostView extends React.Component {
   handleView = () => this.setState({ ...this.state, isEdit: false });
 
   handleDelete = () => {
-    const { id } = this.state;
+    const { id } = this.props;
 
     console.log(`Deleting: ${id}`);
     deletePost(id);

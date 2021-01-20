@@ -1,3 +1,4 @@
 api/env
 api/__pycache__
 api/config_data.py
+api/apiLog.log
