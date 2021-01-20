@@ -21,8 +21,8 @@ class Home extends React.Component {
   }
 
   componentWillUnmount() {
-    // clearInterval(this.timer);
-    // this.timer = null;
+    clearInterval(this.timer);
+    this.timer = null;
   }
 
   async fetchPostData() {
@@ -31,16 +31,12 @@ class Home extends React.Component {
       const response = await getPosts();
       this.setState({ entryData: response, isFetching: false });
     } catch (e) {
-      console.log(e);
       this.setState({ ...this.state, isFetching: false });
     }
   }
 
   render() {
     const { entryData, isFetching } = this.state;
-
-    console.log("Home: " + entryData);
-    console.log("Home: " + isFetching);
 
     return (
       <div className="Home">
@@ -49,11 +45,7 @@ class Home extends React.Component {
           <NewEntry />
         </div>
         <div className="ContentContainer">
-          <PostList
-            className="PostList"
-            data={entryData}
-            isFetching={isFetching}
-          ></PostList>
+          <PostList data={entryData} isFetching={isFetching}></PostList>
         </div>
       </div>
     );

@@ -48,17 +48,20 @@ def read_entry(id):
 def update_entry():
     # try:
     _json = request.json
-    _id = request.form.get("id")
-    _title = request.form.get("title")
-    _date = request.form.get("date")
-    _content = request.form.get("content")
-    if _id and _title and _date and _content and request.method == "POST":
-        query = "UPDATE tbl_entry SET entry_title=%s, entry_date=%s, entry_content=%s WHERE entry_id=%s"
-        data = (_title, _date, _content, _id)
-        db_write(query, data)
-        # resp = jsonify("Entry updated successfully!")
-        # resp.status_code = 200
+    _id = _json["id"]
+    _title = _json["title"]
+    _content = _json["content"]
 
+    if _id and _title and _content and request.method == "POST":
+        query = (
+            "UPDATE tbl_entry SET entry_title=%s, entry_content=%s WHERE entry_id=%s"
+        )
+        data = (_title, _content, _id)
+        test = db_write(query, data)
+        resp = jsonify("Entry updated successfully!")
+        resp.status_code = 200
+        if not test:
+            return not_found()
         return resp
     else:
         return not_found()

@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 
 function EditButton(props) {
   const { editClick, updateClick, isEdit } = props;
-  console.log(isEdit);
+
   if (isEdit)
     return (
       <Button variant="info" onClick={updateClick}>

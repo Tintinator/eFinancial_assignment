@@ -5,10 +5,10 @@ import PostView from "./PostView";
 
 function PostList(props) {
   const { data, isFetching } = props;
-  console.log("PostList: " + data);
+
   return (
     <div>
-      <ListGroup className="PostList">
+      <ListGroup>
         <ListGroup.Item action href="#link1">
           Link 1
         </ListGroup.Item>

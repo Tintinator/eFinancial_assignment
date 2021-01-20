@@ -6,9 +6,11 @@ import { deletePost, updatePost } from "../api/BlogCommands";
 import EditButton from "./EditButton";
 
 function PostView(props) {
+  const { title, date, id, content } = props;
   const [show, setShow] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const { title, date, id, content } = props;
+  const [postTitle, setPostTitle] = useState(title);
+  const [postContent, setPostContent] = useState(content);
 
   const handleClose = () => setShow(false);
   const handleShow = () => {
@@ -23,7 +25,17 @@ function PostView(props) {
     handleClose();
   };
   const handleUpdate = () => {
-    console.log("temp update");
+    console.log(`Updating: ${id}`);
+    updatePost(id, postTitle, postContent);
+    handleClose();
+  };
+  const dateFmt = (inputInstant) => {
+    const dte = new Date(inputInstant);
+    const year = dte.getFullYear();
+    const month = (dte.getMonth() + 1).toString().padStart(2, "0");
+    const day = dte.getDate().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -32,12 +44,37 @@ function PostView(props) {
         {`${id}. ${title}`}
       </ListGroup.Item>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          {/* probably make a div here with like ended inputs for date */}
-          <Modal.Title>{`${id}. ${title}`}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{content}</Modal.Body>
+      <Modal show={show} onHide={handleClose} centered>
+        <Modal.Body>
+          <Form>
+            <Form.Control
+              onChange={(e) => {
+                setPostTitle(e.target.value);
+              }}
+              placeholder="Title"
+              value={postTitle}
+              disabled={!isEdit}
+            />
+            <br />
+            <Input
+              type="date"
+              placeholder="choose a date"
+              value={dateFmt(date)}
+              disabled
+            />
+            <br />
+            <Form.Control
+              as="textarea"
+              onChange={(e) => {
+                setPostContent(e.target.value);
+              }}
+              placeholder="Text (optional)"
+              rows={3}
+              value={postContent}
+              disabled={!isEdit}
+            />
+          </Form>
+        </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
