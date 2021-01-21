@@ -151,7 +151,7 @@ def db_write(query, params=None):
         cursor.execute(query, params)
         conn.commit()
 
-        return params
+        return True
     except Exception as e:
         app.logger.error(e)
         return False
