@@ -14,7 +14,6 @@ function NewEntry() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const publishPost = () => {
-    console.log(`Creating: ${title} and ${date} and ${content}`);
     createPost(title, date, content);
     handleClose();
   };

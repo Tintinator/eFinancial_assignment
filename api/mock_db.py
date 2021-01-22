@@ -14,7 +14,6 @@ class MockDB(TestCase):
         )
         cursor = cnx.cursor(dictionary=True)
 
-        # drop database if it already exists
         try:
             cursor.execute("DROP DATABASE {}".format(test_db))
             print("DB dropped")
@@ -31,7 +30,6 @@ class MockDB(TestCase):
             exit(1)
         cnx.database = test_db
 
-        # create table
         query = """CREATE TABLE `test_tbl_entry` (
                     `entry_id` int NOT NULL AUTO_INCREMENT,
                     `entry_title` varchar(50) NOT NULL,
@@ -66,7 +64,6 @@ class MockDB(TestCase):
 
         cursor = cnx.cursor(dictionary=True)
 
-        # drop test database
         try:
             cursor.execute("DROP DATABASE {}".format(test_db))
             cnx.commit()

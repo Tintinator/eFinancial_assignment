@@ -31,7 +31,6 @@ class PostView extends React.Component {
   handleDelete = () => {
     const { id } = this.props;
 
-    console.log(`Deleting: ${id}`);
     deletePost(id);
     this.handleClose();
   };
@@ -40,7 +39,6 @@ class PostView extends React.Component {
     const { id } = this.props;
     const { postTitle, postContent } = this.state;
 
-    console.log(`Updating: ${id}`);
     updatePost(id, postTitle, postContent);
     this.handleClose();
   };
