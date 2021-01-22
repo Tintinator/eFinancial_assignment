@@ -17,7 +17,7 @@ class Home extends React.Component {
 
   componentDidMount() {
     this.fetchPostData();
-    this.timer = setInterval(() => this.fetchPostData(), 60000);
+    this.timer = setInterval(() => this.fetchPostData(), 10000);
   }
 
   componentWillUnmount() {
