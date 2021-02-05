@@ -1,5 +1,5 @@
 flask-restful
 flask-mysql
+flask_cors
 flask
 mock
-mock_db
